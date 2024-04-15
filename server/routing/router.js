@@ -1,4 +1,6 @@
 const { Router } = require("express");
+const UserModel = require("../../database/models");
+const routerController = require("./controller/controller");
 
 const router = new Router();
 
@@ -7,10 +9,10 @@ router.get('/' , (req , res) => {
     res.status(200).json({message:'hello from base route'})
 });
 
-router.get('/foo' , (req, res) => {
-    res.status(200).json({message:'hello from foo'})
-})
+router.post('/registration' , routerController.registration) ;
 
-router.post('/bar')
+router.get('/login' , (req , res ,next) => {});
+
+router.post('/auth' , routerController.authorization) ;
 
 module.exports = router ;
