@@ -9,9 +9,9 @@ router.get("/", (req, res) => {
 });
 
 router.post("/registration", routerController.user_registration);
-
 router.post("/logout", routerController.user_logout);
-
 router.post("/auth", routerController.user_authorization);
+
+// router.get()s
 
 module.exports = router;

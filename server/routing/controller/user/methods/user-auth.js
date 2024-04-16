@@ -31,14 +31,14 @@ async function user_authorization(req, res, next) {
     ? res.status(200).json({
         status: authorization_result.status,
         message: authorization_result.message,
-        payload:{
-            token:authorization_result.payload.token,
-        }
+        payload: {
+          token: authorization_result.payload.token,
+        },
       })
     : res.status(409).json({
         status: authorization_result.status,
         message: authorization_result.message,
-        payload:null ,
+        payload: null,
       });
 }
 
@@ -72,7 +72,7 @@ async function authorization(userDoc) {
   const user = userDoc;
   // doc
   if (!process.env.secret_key)
-    return { status: false, message: "secret key env error" , payload:null };
+    return { status: false, message: "secret key env error", payload: null };
   const secret = process.env.secret_key;
 
   const userid = user._id.toString();
@@ -83,7 +83,7 @@ async function authorization(userDoc) {
   user.secret = secret;
   await user.save();
 
-  return { status: true, message: "user AUTHORIZED" , payload:{token} };
+  return { status: true, message: "user AUTHORIZED", payload: { token } };
 }
 
 async function find_By_Username_And_Password({ password, email }) {

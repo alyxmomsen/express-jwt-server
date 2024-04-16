@@ -7,7 +7,7 @@ class UserController {
   constructor() {
     this.user_registration = user_registration;
     this.user_authorization = user_authorization;
-    this.user_logout = user_logout ;
+    this.user_logout = user_logout;
   }
 }
 
