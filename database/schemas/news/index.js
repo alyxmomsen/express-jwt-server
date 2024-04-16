@@ -1,9 +1,8 @@
 const { Schema } = require("mongoose");
 
 const newsSchema = new Schema({
-    title:String ,
-    body:String ,
-     
-})
+  title: String,
+  body: String,
+});
 
-module.exports = userSchema ;
+module.exports = userSchema;
