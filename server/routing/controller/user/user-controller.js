@@ -1,13 +1,15 @@
-const UserModel = require("../../../../database/models");
-const user_authorization = require("./methods/user-auth");
+const UserModel = require("../../../../database/models/user-model");
+const user_account = require("./methods/user-account");
+const user_authorization = require("./methods/user-login");
 const user_logout = require("./methods/user-logout");
 const user_registration = require("./methods/user-registration");
 
 class UserController {
   constructor() {
-    this.user_registration = user_registration;
-    this.user_authorization = user_authorization;
-    this.user_logout = user_logout;
+    this.registration = user_registration;
+    this.login = user_authorization;
+    this.logout = user_logout;
+    this.account = user_account;
   }
 }
 

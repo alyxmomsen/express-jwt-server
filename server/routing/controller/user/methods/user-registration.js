@@ -1,4 +1,4 @@
-const UserModel = require("../../../../../database/models");
+const UserModel = require("../../../../../database/models/user-model");
 
 async function userRegistration(req, res, next) {
   try {

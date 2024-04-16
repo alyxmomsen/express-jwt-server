@@ -5,4 +5,4 @@ const newsSchema = new Schema({
   body: String,
 });
 
-module.exports = userSchema;
+module.exports = newsSchema;

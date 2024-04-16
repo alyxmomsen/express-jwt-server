@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const UserModel = require("../../../../../database/models");
+const UserModel = require("../../../../../database/models/user-model");
 
-async function user_authorization(req, res, next) {
+async function user_login(req, res, next) {
   const body = req.body;
   const headers = req.headers;
   const auth_header = headers.authorization;
@@ -15,13 +15,7 @@ async function user_authorization(req, res, next) {
       .status(409)
       .json({ status: false, message: "request no contain email or password" });
 
-  const authentication_result = await userAuthetnticate({ email, password });
-
-  if (!authentication_result.status)
-    return res.status(409).json({
-      status: authentication_result.status,
-      message: authentication_result.message,
-    });
+  const authentication_result = await authetnticateUser({ email, password });
 
   const authorization_result = await authorization(
     authentication_result.payload,
@@ -42,9 +36,9 @@ async function user_authorization(req, res, next) {
       });
 }
 
-module.exports = user_authorization;
+module.exports = user_login;
 
-async function userAuthetnticate({ email, password }) {
+async function authetnticateUser({ email, password }) {
   if (!email) return { status: false, message: "EMAIL no passed " };
   if (!password) return { status: false, message: "PASSWORD no passed " };
 
@@ -77,11 +71,6 @@ async function authorization(userDoc) {
 
   const userid = user._id.toString();
   const token = jwt.sign({ userid }, secret);
-
-  user.isAuthorized = true;
-  user.token = token;
-  user.secret = secret;
-  await user.save();
 
   return { status: true, message: "user AUTHORIZED", payload: { token } };
 }
