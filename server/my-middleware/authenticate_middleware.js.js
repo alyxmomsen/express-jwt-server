@@ -3,15 +3,30 @@ const jwt = require('jsonwebtoken');
 
 async function authMiddleWare(req, res, next) {
 
-  const token = req.headers.authorization;
-  const data = jwt.verify(token , process.env.secret_key);
-  // console.log({token , data});
+  try {
+    const {authorization}  = req.headers;
+    const token = authorization ;
 
+    // console.log({authorization});
 
-  if(!data) res.status(409).json({status:false , message:'failed'});
+    const decoded = jwt.verify(token ,process.env.secret_key );
 
-  req.userid = data.userid ;
-  next();
+    if(decoded) {
+      req.userid = decoded.userid ;
+      next();
+    }
+    else {
+      return res.status(401).json({status:false , message:myErr});
+    }
+    
+  }
+  catch (myErr) {
+    console.log({myErr});
+    return res.status(401).json({status:false , message:myErr});
+    
+  }
+  
+  
 }
 
 module.exports = authMiddleWare;

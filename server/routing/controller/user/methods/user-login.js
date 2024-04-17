@@ -3,12 +3,8 @@ const UserModel = require("../../../../../database/models/user-model");
 
 async function user_login(req, res, next) {
   const body = req.body;
-  const headers = req.headers;
-  const auth_header = headers.authorization;
 
   const { email, password } = body;
-
-  console.log({ email, password });
 
   if (!email || !password)
     return res
@@ -16,6 +12,8 @@ async function user_login(req, res, next) {
       .json({ status: false, message: "request no contain email or password" });
 
   const authentication_result = await authetnticateUser({ email, password });
+
+  if(!authentication_result.status) return res.status(401).json({status:false ,  message:authentication_result.message});
 
   const authorization_result = await authorization(
     authentication_result.payload,
@@ -50,8 +48,8 @@ async function authetnticateUser({ email, password }) {
   return ifDocByUsernameAndPassworMatch
     ? {
         status: true,
-        message: "username and password MATCH",
-        payload: ifDocByUsernameAndPassworMatch,
+        message: "username and password MATCH" ,
+        payload: ifDocByUsernameAndPassworMatch ,
       }
     : {
         status: false,

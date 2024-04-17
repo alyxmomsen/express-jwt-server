@@ -3,22 +3,22 @@ const UserModel = require("../../../../../database/models/user-model");
 
 async function user_account(request, response, next) {
 
-
-  // return response.status(409).json({status:false , message:'failure'});
+  console.log({userid:request.userid});
   
-  if(!request.userid) return response.status(409).json({status:false , message:'fail'});
+  const doc = await UserModel.findById(request.userid);
   
-  const userid = request.userid ;
 
-  // console.log(typeof userid);
+  if(!doc) {
+    return response
+    .status(401)
+    .json({ status: true, message: "hello from account", payload: 'auth error' });
+  }
+
   
-  const doc = await UserModel.findById(userid) ;
-
-  console.log(doc);
-
   return response
-    .status(200)
-    .json({ status: true, message: "hello from account", payload: doc });
+  .status(200)
+  .json({ status: true, message: "hello from account", payload: doc });
+  
 }
 
 module.exports = user_account;
