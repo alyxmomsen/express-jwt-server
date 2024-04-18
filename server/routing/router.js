@@ -14,6 +14,7 @@ api_router.post("/auth", (req, res) =>
 api_router.get("/account", authMiddleWare , routerController.user.account);
 api_router.post("/logout", routerController.user.logout);
 
-// router.get('/news' , () => {});
+api_router.get("/news" , routerController.news.get_all) ;
+api_router.post("/news" , authMiddleWare , routerController.news.post_one);
 
 module.exports = {api_router};

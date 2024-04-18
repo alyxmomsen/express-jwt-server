@@ -12,6 +12,8 @@ async function userRegistration(req, res, next) {
         email,
       });
 
+      
+
       if (!checkResult.status) {
 
         const {status , message} = checkResult ;

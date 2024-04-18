@@ -22,7 +22,7 @@ async function authMiddleWare(req, res, next) {
   }
   catch (myErr) {
     console.log({myErr});
-    return res.status(401).json({status:false , message:myErr});
+    return res.status(401).json({status:false , message:{myErr}});
     
   }
   
