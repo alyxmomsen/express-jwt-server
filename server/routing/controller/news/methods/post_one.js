@@ -1,8 +1,11 @@
 
+const UserModel = require('../../../../../database/models/user-model');
 const NewsModel = require('./../../../../../database/models/news-model');
 
 async function post_one (request , response , next) {
 
+
+    console.log({request});
 
     const {title , body , date_to_post} = request.body ;
 
@@ -10,10 +13,15 @@ async function post_one (request , response , next) {
         return response.status(401).json({status:false , message:'you must provide title'});
     }
 
+    const doc = await UserModel.findById(request.userid);
+
     const news = new NewsModel({
         title ,
         body:body ? body : '' ,
         date_to_post: date_to_post ? date_to_post : new Date(Date.now()).toISOString() ,
+        authorId:request.userid ,
+        authorUserName:doc ? doc.username : 'undefined' ,
+
     });
 
     await news.save();
