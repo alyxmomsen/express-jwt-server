@@ -13,8 +13,11 @@ require("dotenv").config();
 app.use(cors());
 // app.use(MyMiddleWare);
 app.use(bodyParser.json());
+app.use(express.static('uploads'));
 app.use('/api' , api_router);
 
 app.listen(3001, () => {
   console.log(`express run on port ${process.env.port}`);
 });
+
+

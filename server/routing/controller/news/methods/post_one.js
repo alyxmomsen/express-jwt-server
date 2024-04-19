@@ -5,9 +5,11 @@ const NewsModel = require('./../../../../../database/models/news-model');
 async function post_one (request , response , next) {
 
 
-    console.log({request});
+    console.log({request:request.file.filename});
 
     const {title , body , date_to_post} = request.body ;
+
+    const {file} = request ;
 
     if(!title) {
         return response.status(401).json({status:false , message:'you must provide title'});
@@ -21,7 +23,7 @@ async function post_one (request , response , next) {
         date_to_post: date_to_post ? date_to_post : new Date(Date.now()).toISOString() ,
         authorId:request.userid ,
         authorUserName:doc ? doc.username : 'undefined' ,
-
+        image_url:'http://localhost:3001/' + file.filename ,
     });
 
     await news.save();

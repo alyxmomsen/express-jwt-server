@@ -6,6 +6,7 @@ const newsSchema = new Schema({
   date_to_post: Date ,
   authorId: String ,
   authorUserName: String ,
+  image_url:String ,
 });
 
 module.exports = newsSchema;
