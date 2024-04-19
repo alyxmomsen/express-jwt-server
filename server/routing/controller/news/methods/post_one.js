@@ -24,6 +24,7 @@ async function post_one (request , response , next) {
         authorId:request.userid ,
         authorUserName:doc ? doc.username : 'undefined' ,
         image_url:'http://localhost:3001/' + file.filename ,
+        date:new Date() ,
     });
 
     await news.save();

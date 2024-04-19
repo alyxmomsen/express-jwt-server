@@ -1,4 +1,5 @@
 const UserModel = require("../../../../../database/models/user-model");
+const bcrypt = require('bcrypt');
 
 async function userRegistration(req, res, next) {
   try {
@@ -23,23 +24,27 @@ async function userRegistration(req, res, next) {
           .json({ status , message });
       }
 
+      const {status , message , payload} = await tryToHashThePassword(password) ;
+
+      if(!status) return res.status(500).json({status , message});
+
       const newUser = new UserModel({
         username,
-        password,
+        password:payload,
         email,
       });
 
       await newUser.save();
-
-      return res.status(200).json({ message: "user saved" });
+      
+      return res.status(200).json({status:true ,  message: "user saved" });
     } else {
-      return res.status(401).json({ message: "user no saved" });
+      return res.status(401).json({status:false ,   message: "user no saved" });
     }
   } catch (err) {
 
     console.log(err);
 
-    return res.status(500).json({ message: "error on server" });
+    return res.status(500).json({status:false ,  message: err });
   }
 }
 
@@ -59,4 +64,22 @@ async function check_if_the_name_is_available({ username, email }) {
   const status = true;
 
   return { message, status };
+}
+
+
+async function tryToHashThePassword(password) {
+  try {
+    const result = await new Promise((resolve, reject) => {
+      bcrypt.hash(password, 10, function(err, hash) {
+        if (err) {
+          reject({ status: false, message: 'error while hashing', payload: null });
+        } else {
+          resolve({ status: true, message: 'ok', payload: hash });
+        }
+      });
+    });
+    return result;
+  } catch (error) {
+    return { status: false, message: 'error', payload: null };
+  }
 }

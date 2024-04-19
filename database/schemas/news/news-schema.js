@@ -7,6 +7,7 @@ const newsSchema = new Schema({
   authorId: String ,
   authorUserName: String ,
   image_url:String ,
+  date:Date ,
 });
 
 module.exports = newsSchema;

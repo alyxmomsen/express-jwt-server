@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 const UserModel = require("../../../../../database/models/user-model");
 
 async function user_login(req, res, next) {
@@ -40,22 +41,31 @@ async function authetnticateUser({ email, password }) {
   if (!email) return { status: false, message: "EMAIL no passed " };
   if (!password) return { status: false, message: "PASSWORD no passed " };
 
-  const ifDocByUsernameAndPassworMatch = await find_By_Username_And_Password({
-    email,
-    password,
+  const ifDocByEmailMatch = await find_user_by_email({
+    email
   });
 
-  return ifDocByUsernameAndPassworMatch
-    ? {
-        status: true,
-        message: "username and password MATCH" ,
-        payload: ifDocByUsernameAndPassworMatch ,
-      }
-    : {
-        status: false,
-        message: "username and password NO MATCH",
-        payload: null,
-      };
+  if(!ifDocByEmailMatch) return {
+    status: false,
+    message: "username or password NO MATCH", // fake
+    payload: null,
+  };
+
+  const hashedPassword = ifDocByEmailMatch.password ;
+
+  const result = bcrypt.compareSync(password, hashedPassword) ;
+
+  if(!result) return  {
+    status: false,
+    message: "username or password NO MATCH", // fake
+    payload: null,
+  };
+
+  return {
+    status: true,
+    message: "username and password MATCH" , // fake
+    payload: ifDocByEmailMatch ,
+  }
 }
 
 async function authorization(userDoc) {
@@ -73,10 +83,10 @@ async function authorization(userDoc) {
   return { status: true, message: "user AUTHORIZED", payload: { token } };
 }
 
-async function find_By_Username_And_Password({ password, email }) {
+async function find_user_by_email({ email }) {
   const doc = await UserModel.findOne({
     email: { $eq: email },
-    password: { $eq: password },
   });
+
   return doc;
 }
