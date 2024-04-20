@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 
 async function authMiddleWare(req, res, next) {
-
+  
   try {
     const {authorization}  = req.headers;
     const token = authorization ;

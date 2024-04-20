@@ -8,7 +8,7 @@ async function userRegistration(req, res, next) {
     const { username, password, email } = body;
 
     if (username && password && email) {
-      const checkResult = await check_if_the_name_is_available({
+      const checkResult = await check_if_the_name_and_email_is_available({
         username,
         email,
       });
@@ -36,9 +36,9 @@ async function userRegistration(req, res, next) {
 
       await newUser.save();
       
-      return res.status(200).json({status:true ,  message: "user saved" });
+      return res.status(200).json({status:true ,  message: "registration is successful".toUpperCase() });
     } else {
-      return res.status(401).json({status:false ,   message: "user no saved" });
+      return res.status(401).json({status:false ,   message: "registration rejected".toUpperCase() });
     }
   } catch (err) {
 
@@ -50,7 +50,7 @@ async function userRegistration(req, res, next) {
 
 module.exports = userRegistration;
 
-async function check_if_the_name_is_available({ username, email }) {
+async function check_if_the_name_and_email_is_available({ username, email }) {
   const doc = await UserModel.findOne({ username: { $eq: username } , email:{$eq:email} });
 
   if (doc) {
