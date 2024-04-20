@@ -1,36 +1,38 @@
+const UserModel = require("../../../../../database/models/user-model");
+const NewsModel = require("./../../../../../database/models/news-model");
 
-const UserModel = require('../../../../../database/models/user-model');
-const NewsModel = require('./../../../../../database/models/news-model');
+async function post_one(request, response, next) {
+  const { title, body, date_to_post } = request.body;
 
-async function post_one (request , response , next) {
+  console.log({ date_to_post });
 
+  const { file } = request;
 
-    console.log({request:request.file.filename});
+  if (!title) {
+    return response
+      .status(401)
+      .json({ status: false, message: "you must provide title" });
+  }
 
-    const {title , body , date_to_post} = request.body ;
+  const doc = await UserModel.findById(request.userid);
 
-    const {file} = request ;
+  const news = new NewsModel({
+    title,
+    body: body ? body : "",
+    date_to_post: date_to_post
+      ? date_to_post
+      : new Date(Date.now()).toISOString(),
+    authorId: request.userid,
+    authorUserName: doc ? doc.username : "undefined",
+    image_url: "http://localhost:3001/" + file.filename,
+    date: new Date(),
+  });
 
-    if(!title) {
-        return response.status(401).json({status:false , message:'you must provide title'});
-    }
+  await news.save();
 
-    const doc = await UserModel.findById(request.userid);
-
-    const news = new NewsModel({
-        title ,
-        body:body ? body : '' ,
-        date_to_post: date_to_post ? date_to_post : new Date(Date.now()).toISOString() ,
-        authorId:request.userid ,
-        authorUserName:doc ? doc.username : 'undefined' ,
-        image_url:'http://localhost:3001/' + file.filename ,
-        date:new Date() ,
-    });
-
-    await news.save();
-
-
-    response.status(200).json({status:true , payload:null , message:'you posted the news'});
+  response
+    .status(200)
+    .json({ status: true, payload: null, message: "you posted the news" });
 }
 
-module.exports = post_one ;
+module.exports = post_one;

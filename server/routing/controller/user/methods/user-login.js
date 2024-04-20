@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const UserModel = require("../../../../../database/models/user-model");
 
 async function user_login(req, res, next) {
@@ -14,7 +14,10 @@ async function user_login(req, res, next) {
 
   const authentication_result = await authetnticateUser({ email, password });
 
-  if(!authentication_result.status) return res.status(401).json({status:false ,  message:authentication_result.message});
+  if (!authentication_result.status)
+    return res
+      .status(401)
+      .json({ status: false, message: authentication_result.message });
 
   const authorization_result = await authorization(
     authentication_result.payload,
@@ -42,30 +45,32 @@ async function authetnticateUser({ email, password }) {
   if (!password) return { status: false, message: "PASSWORD no passed " };
 
   const ifDocByEmailMatch = await find_user_by_email({
-    email
+    email,
   });
 
-  if(!ifDocByEmailMatch) return {
-    status: false,
-    message: "username or password NO MATCH", // fake
-    payload: null,
-  };
+  if (!ifDocByEmailMatch)
+    return {
+      status: false,
+      message: "username or password NO MATCH", // fake
+      payload: null,
+    };
 
-  const hashedPassword = ifDocByEmailMatch.password ;
+  const hashedPassword = ifDocByEmailMatch.password;
 
-  const result = bcrypt.compareSync(password, hashedPassword) ;
+  const result = bcrypt.compareSync(password, hashedPassword);
 
-  if(!result) return  {
-    status: false,
-    message: "username or password NO MATCH", // fake
-    payload: null,
-  };
+  if (!result)
+    return {
+      status: false,
+      message: "username or password NO MATCH", // fake
+      payload: null,
+    };
 
   return {
     status: true,
-    message: "username and password MATCH" , // fake
-    payload: ifDocByEmailMatch ,
-  }
+    message: "username and password MATCH", // fake
+    payload: ifDocByEmailMatch,
+  };
 }
 
 async function authorization(userDoc) {
