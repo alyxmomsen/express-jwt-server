@@ -1,5 +1,6 @@
 const UserModel = require("../../../../../database/models/user-model");
 const bcrypt = require("bcrypt");
+const { MyResponse, MyPayload } = require("../../../../MyUtilits/utilits");
 
 async function userRegistration(req, res, next) {
   try {
@@ -31,20 +32,32 @@ async function userRegistration(req, res, next) {
 
       await newUser.save();
 
-      return res.status(200).json({
-        status: true,
-        message: "registration is successful".toUpperCase(),
-      });
+      const myResponse = new MyResponse(
+        true,
+        "registration is successful".toUpperCase(),
+        null,
+      );
+
+      return res.status(211).json(myResponse);
     } else {
-      return res.status(401).json({
-        status: false,
-        message: "registration rejected".toUpperCase(),
-      });
+      const myResponse = new MyResponse(
+        false,
+        "registration rejected".toUpperCase(),
+        null,
+      );
+
+      return res.status(401).json(myResponse);
     }
   } catch (err) {
+    const myResponse = new MyResponse(
+      false,
+      "registration error".toUpperCase(),
+      new MyPayload("error", err),
+    );
+
     console.log(err);
 
-    return res.status(500).json({ status: false, message: err });
+    return res.status(500).json(myResponse);
   }
 }
 
@@ -52,9 +65,10 @@ module.exports = userRegistration;
 
 async function check_if_the_name_and_email_is_available({ username, email }) {
   const doc = await UserModel.findOne({
-    username: { $eq: username },
-    email: { $eq: email },
+    $or: [{ username: { $eq: username } }, { email: { $eq: email } }],
   });
+
+  console.log({ doc });
 
   if (doc) {
     const message = "that USER NAME or EMAIL is EXISTS";
@@ -76,11 +90,11 @@ async function tryToHashThePassword(password) {
         if (err) {
           reject({
             status: false,
-            message: "error while hashing",
+            message: "password hashing error".toUpperCase(),
             payload: null,
           });
         } else {
-          resolve({ status: true, message: "ok", payload: hash });
+          resolve({ status: true, message: "hashed".toUpperCase(), payload: hash });
         }
       });
     });
