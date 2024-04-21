@@ -69,6 +69,13 @@ api_router.get(
   routerController.news.get_one,
 );
 
+api_router.patch(
+  "/user/account/thepost" , 
+  authMiddleWare ,
+  upload_middleware.single('file') ,
+  routerController.news.update_one ,
+);
+
 module.exports = {
   api_router,
 };

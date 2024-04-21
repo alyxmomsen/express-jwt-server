@@ -19,7 +19,7 @@ async function getUserPosts(request, response) {
       .json(new MyResponse(false, "user id invalid", null));
   }
 
-  const doc = await NewsModel.find({ authorId: userId });
+  const doc = await NewsModel.find({ authorId: userId }).sort({date_to_post:'desc'});
 
   console.log({ doc });
 
