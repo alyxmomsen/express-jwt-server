@@ -18,6 +18,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static("uploads"));
 app.use("/api", api_router);
+app.get("/" , (req , res) => {
+  res.status(200).json("hello there");
+});
 
 app.listen(3001, () => {
   console.log(`express run on port ${process.env.port}`);
