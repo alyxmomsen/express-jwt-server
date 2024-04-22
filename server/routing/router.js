@@ -76,6 +76,11 @@ api_router.patch(
   routerController.news.update_one ,
 );
 
+
+api_router.get('/' , (req , res) => {
+  res.status(200).json('hello ther');
+});
+
 module.exports = {
   api_router,
 };
