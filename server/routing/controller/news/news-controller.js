@@ -15,4 +15,22 @@ class NewsController {
   }
 }
 
+/**
+ * 
+ * @param {boolean} ifMongoExist 
+ * @returns () => {}
+ */
+
+function setMethod (ifMongoExist) {
+
+  return async (req , res) => {
+
+    const allnews = await NewsModel.find({
+      date_to_post: { $lte: new Date(Date.now()).toISOString() },
+    }).sort({ date_to_post: "desc" });
+
+  }
+  
+}
+
 module.exports = NewsController;
