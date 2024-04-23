@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 
 const db = mongoose.connection;
 
-db.on("error", console.error.bind(console, "Ошибка подключения к MongoDB:"));
+db.on("error", (err) => {
+  console.log('smth wrong with db');
+});
+
 db.once("open", () => {
   console.log("Подключено к MongoDB");
 });
