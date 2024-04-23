@@ -11,9 +11,7 @@ const firebaserouter = require("./routing/firebase-based-router/router.js");
 
 
 db.on("error", (err) => {
-  console.log('smth wrong with db');
-
-  run_express_server(firebaserouter);
+ 
 
 });
 
@@ -23,10 +21,9 @@ db.once("open", () => {
 
   console.log('run server ... ');
 
-
-  run_express_server(api_router);
-
 });
+
+run_express_server(api_router);
 
 
 function run_express_server (router) {
