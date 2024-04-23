@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(express.static("uploads"));
 app.use("/api", api_router);
 
-app.get('/news' , (req , res) => {
+app.get('/news/hello' , (req , res) => {
   res.send('hello from news');
 });
 
