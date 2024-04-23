@@ -10,4 +10,4 @@ async function get_all_news(request, response, next) {
   response.status(200).json({ status: true, payload: allnews ? allnews : null});
 }
 
-module.exports = get_all_news;
+module.exports = get_all_news ;
