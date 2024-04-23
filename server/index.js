@@ -18,6 +18,10 @@ app.use(bodyParser.json());
 app.use(express.static("uploads"));
 app.use("/api", api_router);
 
+app.get('/news' , (req , res) => {
+  res.send('hello from news');
+});
+
 app.listen(3002, () => {
   console.log(`express run on port `);
 });
