@@ -31,7 +31,7 @@ api_router.post("/logout", routerController.user.logout);
 
 api_router.get("/news", routerController.news.get_all);
 
-api_router.get("foo" , (req , res) => {
+api_router.get("/foo" , (req , res) => {
   res.send('bar');
 });
 
