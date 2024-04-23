@@ -7,7 +7,7 @@ async function get_all_news(request, response, next) {
 
   console.log({ allnews });
 
-  response.status(200).json({ status: true, payload: allnews });
+  response.status(200).json({ status: true, payload: allnews ? allnews : null});
 }
 
 module.exports = get_all_news;
