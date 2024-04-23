@@ -13,15 +13,14 @@ const app = express();
 
 require("dotenv").config();
 
+console.log('the port: ' , process.env.port) ;
+
 app.use(cors());
 // app.use(MyMiddleWare);
 app.use(bodyParser.json());
 app.use(express.static("uploads"));
 app.use("/api", api_router);
-app.get("/" , (req , res) => {
-  res.status(200).json("hello there");
-});
 
-app.listen(3001, () => {
+app.listen(3002, () => {
   console.log(`express run on port `);
 });
